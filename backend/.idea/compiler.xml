@@ -7,9 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="eureka-server" />
         <module name="authentication-service" />
+        <module name="eureka-server" />
         <module name="gateway" />
+        <module name="hotel-service" />
       </profile>
     </annotationProcessing>
   </component>

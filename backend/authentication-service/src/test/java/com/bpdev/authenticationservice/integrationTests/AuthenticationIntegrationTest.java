@@ -1,7 +1,7 @@
 package com.bpdev.authenticationservice.integrationTests;
 
 import com.bpdev.authenticationservice.DataLoader;
-import com.bpdev.authenticationservice.dtos.LoginDTO;
+import com.bpdev.authenticationservice.dtos.LoginRequest;
 import com.bpdev.authenticationservice.entities.User;
 import com.bpdev.authenticationservice.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,8 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -28,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AuthenticationIntegrationTest {
 
-    private static final String PATH = "/auth";
+    private static final String PATH = "/api/v1/auth";
 
     @Autowired
     private UserRepository userRepository;
@@ -50,7 +49,7 @@ class AuthenticationIntegrationTest {
             .name("user1")
             .password("password")
             .build();
-    private LoginDTO loginDTO = LoginDTO.builder()
+    private LoginRequest loginRequest = LoginRequest.builder()
             .name("user1")
             .password("password")
             .build();
@@ -74,7 +73,7 @@ class AuthenticationIntegrationTest {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         setupUser();
 
-        mockMvc.perform(mockPostRequest("login", loginDTO))
+        mockMvc.perform(mockPostRequest("login", loginRequest))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isString());
 

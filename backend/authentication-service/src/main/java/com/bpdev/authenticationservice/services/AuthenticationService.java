@@ -1,7 +1,7 @@
 package com.bpdev.authenticationservice.services;
 
 
-import com.bpdev.authenticationservice.dtos.LoginDTO;
+import com.bpdev.authenticationservice.dtos.LoginRequest;
 import com.bpdev.authenticationservice.entities.User;
 import com.bpdev.authenticationservice.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +34,9 @@ public class AuthenticationService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + name));
     }
 
-    public String login(LoginDTO loginDTO) {
+    public String login(LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDTO.getName(), loginDTO.getPassword());
+                new UsernamePasswordAuthenticationToken(loginRequest.getName(), loginRequest.getPassword());
 
         Authentication authentication = this.authenticationManager.authenticate
                 (usernamePasswordAuthenticationToken);
