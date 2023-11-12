@@ -52,6 +52,12 @@ public class HotelController {
         return ResponseEntity.ok().body(hotelService.findAllByName(name));
     }
 
+    @GetMapping(value = "/{id}/exists")
+    public ResponseEntity<Boolean> existsById(@PathVariable UUID id) {
+        boolean exists = hotelService.existsById(id);
+        return ResponseEntity.ok(exists);
+    }
+
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Void> updateById
             (@PathVariable UUID id, @RequestBody HotelUpdateRequest hotelUpdateRequest) {
@@ -64,4 +70,5 @@ public class HotelController {
         hotelService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
 }

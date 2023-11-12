@@ -6,6 +6,7 @@ import com.bpdev.hotelservice.entities.Hotel;
 import com.bpdev.hotelservice.exceptions.ResourceNotFoundException;
 import com.bpdev.hotelservice.exceptions.UniqueConstraintViolationException;
 import com.bpdev.hotelservice.repositories.HotelRepository;
+import com.bpdev.rabbitmqservice.RabbitMQMessageProducer;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,6 +21,8 @@ public class HotelService {
 
     @Autowired
     private HotelRepository hotelRepository;
+    @Autowired
+    private MessagingService messagingService;
 
     public Hotel create(HotelRequest hotelRequest){
         try{
@@ -74,6 +77,8 @@ public class HotelService {
     public void deleteById(UUID id){
         try {
             hotelRepository.deleteById(id);
+
+            messagingService.publishHotelDeletedEvent(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Hotel not found. ID " + id);
         }
@@ -91,4 +96,7 @@ public class HotelService {
                 .build();
     }
 
+    public boolean existsById(UUID id) {
+        return hotelRepository.existsById(id);
+    }
 }

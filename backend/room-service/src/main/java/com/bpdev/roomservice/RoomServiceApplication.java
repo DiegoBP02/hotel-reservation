@@ -1,18 +1,18 @@
-package com.bpdev.hotelservice;
+package com.bpdev.roomservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(
 		scanBasePackages = {
-				"com.bpdev.hotelservice",
+				"com.bpdev.roomservice",
 				"com.bpdev.rabbitmqservice"
 		}
 )
-public class HotelServiceApplication {
+public class RoomServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HotelServiceApplication.class, args);
+		SpringApplication.run(RoomServiceApplication.class, args);
 	}
 
 }

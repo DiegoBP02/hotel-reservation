@@ -11,9 +11,13 @@
         <module name="room-service" />
         <module name="eureka-server" />
         <module name="gateway" />
+        <module name="rabbitmq-service" />
         <module name="hotel-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="rabbimt-service" target="18" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
