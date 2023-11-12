@@ -42,13 +42,13 @@ public class HotelController {
         return ResponseEntity.ok().body(hotelService.findById(id));
     }
 
-    @GetMapping(value = "/stars/{stars}")
-    public ResponseEntity<List<Hotel>> findAllByStars(@PathVariable int stars) {
+    @GetMapping(params = "stars")
+    public ResponseEntity<List<Hotel>> findAllByStars(@RequestParam int stars) {
         return ResponseEntity.ok().body(hotelService.findAllByStars(stars));
     }
 
-    @GetMapping(value = "/name/{name}")
-    public ResponseEntity<List<Hotel>> findAllByName(@PathVariable String name) {
+    @GetMapping(params = "name")
+    public ResponseEntity<List<Hotel>> findAllByName(@RequestParam String name) {
         return ResponseEntity.ok().body(hotelService.findAllByName(name));
     }
 

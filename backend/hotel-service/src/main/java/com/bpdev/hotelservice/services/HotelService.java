@@ -66,7 +66,6 @@ public class HotelService {
         hotel.setAddress(hotelUpdateRequest.getAddress());
         hotel.setStars(hotelUpdateRequest.getStars());
         hotel.setEmail(hotelUpdateRequest.getEmail());
-        hotel.setRoomsIds(hotelUpdateRequest.getRoomsIds());
         hotel.setStandardCheckoutTime(hotelUpdateRequest.getStandardCheckoutTime());
         hotel.setAmenities(hotelUpdateRequest.getAmenities());
         hotel.setLateCheckoutFee(hotelUpdateRequest.getLateCheckoutFee());
@@ -86,7 +85,6 @@ public class HotelService {
                 .address(hotelRequest.getAddress())
                 .stars(hotelRequest.getStars())
                 .email(hotelRequest.getEmail())
-                .roomsIds(hotelRequest.getRoomsIds())
                 .standardCheckoutTime(hotelRequest.getStandardCheckoutTime())
                 .amenities(hotelRequest.getAmenities())
                 .lateCheckoutFee(hotelRequest.getLateCheckoutFee())

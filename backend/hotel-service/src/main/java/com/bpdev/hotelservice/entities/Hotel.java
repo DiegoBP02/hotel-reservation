@@ -37,7 +37,6 @@ public class Hotel {
     @NotBlank
     @Column(nullable = false)
     private String email;
-    private List<UUID> roomsIds;
     private List<Amenities> amenities;
     @NotNull
     @Column(nullable = false)

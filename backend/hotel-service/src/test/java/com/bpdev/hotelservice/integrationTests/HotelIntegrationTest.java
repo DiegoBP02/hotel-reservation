@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -97,6 +98,14 @@ class HotelIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON);
     }
 
+    private MockHttpServletRequestBuilder mockGetRequestParams
+            (String param, String value) throws Exception {
+        return MockMvcRequestBuilders
+                .get(PATH)
+                .param(param, value)
+                .accept(MediaType.APPLICATION_JSON);
+    }
+
     private MockHttpServletRequestBuilder mockPatchRequest
             (String endpoint, Object requestObject) throws Exception {
         return MockMvcRequestBuilders
@@ -124,7 +133,7 @@ class HotelIntegrationTest {
     @Test
     void shouldFindAll() throws Exception {
         saveHotel();
-        String expectedResponseBody = "[{\"id\":\"" + hotel.getId().toString() + "\",\"name\":\"Fake Hotel\",\"address\":{\"street\":\"123 Main St\",\"city\":\"Cityville\",\"state\":\"Stateville\",\"zipCode\":\"12345\"},\"stars\":4,\"email\":\"fakehotel@example.com\",\"roomsIds\":null,\"amenities\":[\"Wifi\",\"Pool\"],\"standardCheckoutTime\":\"12:00:00\",\"lateCheckoutFee\":20}]";
+        String expectedResponseBody = "[{\"id\":\"" + hotel.getId().toString() + "\",\"name\":\"Fake Hotel\",\"address\":{\"street\":\"123 Main St\",\"city\":\"Cityville\",\"state\":\"Stateville\",\"zipCode\":\"12345\"},\"stars\":4,\"email\":\"fakehotel@example.com\",\"amenities\":[\"Wifi\",\"Pool\"],\"standardCheckoutTime\":\"12:00:00\",\"lateCheckoutFee\":20}]";
 
         mockMvc.perform(mockGetRequest(""))
                 .andExpect(status().isOk())
@@ -134,7 +143,7 @@ class HotelIntegrationTest {
     @Test
     void shouldFindById() throws Exception {
         saveHotel();
-        String expectedResponseBody = "{\"id\":\"" + hotel.getId().toString() + "\",\"name\":\"Fake Hotel\",\"address\":{\"street\":\"123 Main St\",\"city\":\"Cityville\",\"state\":\"Stateville\",\"zipCode\":\"12345\"},\"stars\":4,\"email\":\"fakehotel@example.com\",\"roomsIds\":null,\"amenities\":[\"Wifi\",\"Pool\"],\"standardCheckoutTime\":\"12:00:00\",\"lateCheckoutFee\":20}";
+        String expectedResponseBody = "{\"id\":\"" + hotel.getId().toString() + "\",\"name\":\"Fake Hotel\",\"address\":{\"street\":\"123 Main St\",\"city\":\"Cityville\",\"state\":\"Stateville\",\"zipCode\":\"12345\"},\"stars\":4,\"email\":\"fakehotel@example.com\",\"amenities\":[\"Wifi\",\"Pool\"],\"standardCheckoutTime\":\"12:00:00\",\"lateCheckoutFee\":20}";
 
         mockMvc.perform(mockGetRequest("/" + hotel.getId().toString()))
                 .andExpect(status().isOk())
@@ -144,9 +153,9 @@ class HotelIntegrationTest {
     @Test
     void shouldFindAllByStars() throws Exception {
         saveHotel();
-        String expectedResponseBody = "[{\"id\":\"" + hotel.getId().toString() + "\",\"name\":\"Fake Hotel\",\"address\":{\"street\":\"123 Main St\",\"city\":\"Cityville\",\"state\":\"Stateville\",\"zipCode\":\"12345\"},\"stars\":4,\"email\":\"fakehotel@example.com\",\"roomsIds\":null,\"amenities\":[\"Wifi\",\"Pool\"],\"standardCheckoutTime\":\"12:00:00\",\"lateCheckoutFee\":20}]";
+        String expectedResponseBody = "[{\"id\":\"" + hotel.getId().toString() + "\",\"name\":\"Fake Hotel\",\"address\":{\"street\":\"123 Main St\",\"city\":\"Cityville\",\"state\":\"Stateville\",\"zipCode\":\"12345\"},\"stars\":4,\"email\":\"fakehotel@example.com\",\"amenities\":[\"Wifi\",\"Pool\"],\"standardCheckoutTime\":\"12:00:00\",\"lateCheckoutFee\":20}]";
 
-        mockMvc.perform(mockGetRequest("/stars/" + hotel.getStars()))
+        mockMvc.perform(mockGetRequestParams("stars", String.valueOf(hotel.getStars())))
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedResponseBody));
     }
@@ -154,9 +163,9 @@ class HotelIntegrationTest {
     @Test
     void shouldFindAllByName() throws Exception {
         saveHotel();
-        String expectedResponseBody = "[{\"id\":\"" + hotel.getId().toString() + "\",\"name\":\"Fake Hotel\",\"address\":{\"street\":\"123 Main St\",\"city\":\"Cityville\",\"state\":\"Stateville\",\"zipCode\":\"12345\"},\"stars\":4,\"email\":\"fakehotel@example.com\",\"roomsIds\":null,\"amenities\":[\"Wifi\",\"Pool\"],\"standardCheckoutTime\":\"12:00:00\",\"lateCheckoutFee\":20}]";
+        String expectedResponseBody = "[{\"id\":\"" + hotel.getId().toString() + "\",\"name\":\"Fake Hotel\",\"address\":{\"street\":\"123 Main St\",\"city\":\"Cityville\",\"state\":\"Stateville\",\"zipCode\":\"12345\"},\"stars\":4,\"email\":\"fakehotel@example.com\",\"amenities\":[\"Wifi\",\"Pool\"],\"standardCheckoutTime\":\"12:00:00\",\"lateCheckoutFee\":20}]";
 
-        mockMvc.perform(mockGetRequest("/name/" + hotel.getName()))
+        mockMvc.perform(mockGetRequestParams("name", hotel.getName()))
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedResponseBody));
     }
@@ -167,6 +176,9 @@ class HotelIntegrationTest {
 
         mockMvc.perform(mockPatchRequest("/" + hotel.getId().toString(), hotelUpdateRequest))
                 .andExpect(status().isNoContent());
+
+        Optional<Hotel> savedHotel = hotelRepository.findById(hotel.getId());
+        assertEquals(hotelUpdateRequest.getName(), savedHotel.get().getName());
     }
 
     @Test
