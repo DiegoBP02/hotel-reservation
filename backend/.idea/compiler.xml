@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="authentication-service" />
+        <module name="reservation-service" />
         <module name="room-service" />
         <module name="guest-service" />
         <module name="eureka-server" />
@@ -18,7 +19,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="rabbimt-service" target="18" />
-      <module name="reservation-service" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

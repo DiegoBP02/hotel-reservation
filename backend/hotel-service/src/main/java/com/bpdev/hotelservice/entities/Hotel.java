@@ -23,6 +23,7 @@ public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Size(min = 3, max = 50)
     @NotBlank
     @Column(nullable = false, length = 50, unique = true)
     private String name;

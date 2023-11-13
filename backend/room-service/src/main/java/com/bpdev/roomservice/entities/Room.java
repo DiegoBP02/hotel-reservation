@@ -38,7 +38,7 @@ public class Room {
     private int beds;
     @Positive
     @Column(nullable = false)
-    private int costPerNight;
+    private Integer costPerNight;
     @NotNull
     @Column(nullable = false)
     private UUID hotelId;
