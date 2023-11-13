@@ -16,6 +16,7 @@
         <module>hotel-service</module>
         <module>room-service</module>
         <module>rabbitmq-service</module>
+        <module>guest-service</module>
     </modules>
 
     <properties>
