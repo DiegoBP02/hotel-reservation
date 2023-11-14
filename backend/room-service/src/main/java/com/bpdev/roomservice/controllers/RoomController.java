@@ -83,7 +83,7 @@ public class RoomController {
 
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Void> updateById
-            (@PathVariable UUID id, @RequestBody RoomUpdateRequest hotelUpdateRequest) {
+            (@PathVariable UUID id, @Valid @RequestBody RoomUpdateRequest hotelUpdateRequest) {
         roomService.updateById(id, hotelUpdateRequest);
         return ResponseEntity.noContent().build();
     }
@@ -92,5 +92,11 @@ public class RoomController {
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         roomService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{id}/exists")
+    public ResponseEntity<Boolean> existsById(@PathVariable UUID id) {
+        boolean exists = roomService.existsById(id);
+        return ResponseEntity.ok(exists);
     }
 }

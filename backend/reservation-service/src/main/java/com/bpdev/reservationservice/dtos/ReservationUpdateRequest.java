@@ -18,15 +18,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationUpdateRequest {
-    @NotNull
     private ReservationStatus reservationStatus;
-    @NotNull
     private ReservationDate reservationDate;
-    @NotNull
     private List<UUID> guestsIds;
-    @NotNull
     private UUID paymentId;
-    @NotNull
     @PositiveOrZero
     private Integer amount;
     private List<ReservationAddOn> reservationAddOns;

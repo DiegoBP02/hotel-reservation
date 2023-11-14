@@ -12,6 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -86,6 +87,10 @@ public class GuestService {
                 .phoneNumber(guestRequest.getPhoneNumber())
                 .isChild(guestRequest.isChild())
                 .build();
+    }
+
+    public boolean existsByIdIn(List<UUID> ids){
+        return guestRepository.existsAllByIdIn(ids);
     }
 
 }

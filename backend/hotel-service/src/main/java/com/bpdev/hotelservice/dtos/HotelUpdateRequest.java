@@ -18,23 +18,18 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HotelUpdateRequest {
-    @NotBlank
     @Size(min = 3, max = 50)
     private String name;
-    @NotNull
     private Address address;
     @Min(0)
     @Max(5)
     private int stars;
     @Email
-    @NotBlank
     @Column(nullable = false)
     private String email;
     private List<UUID> roomsIds;
     private List<Amenities> amenities;
-    @NotNull
     private LocalTime standardCheckoutTime;
-    @NotNull
     @Positive
     private Integer lateCheckoutFee;
 }

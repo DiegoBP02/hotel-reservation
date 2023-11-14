@@ -3,6 +3,7 @@ package com.bpdev.reservationservice.services;
 import com.bpdev.reservationservice.dtos.ReservationRequest;
 import com.bpdev.reservationservice.dtos.ReservationUpdateRequest;
 import com.bpdev.reservationservice.entities.Reservation;
+import com.bpdev.reservationservice.entities.ReservationAddOn;
 import com.bpdev.reservationservice.exceptions.ResourceNotFoundException;
 import com.bpdev.reservationservice.exceptions.UniqueConstraintViolationException;
 import com.bpdev.reservationservice.repositories.ReservationRepository;
@@ -22,7 +23,16 @@ public class ReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
 
+    @Autowired
+    private ReservationServiceClient reservationServiceClient;
+
+    @Autowired
+    private ReservationAddOnService reservationAddOnService;
+
     public Reservation create(ReservationRequest reservationRequest) {
+        reservationServiceClient.checkIfRoomExists(reservationRequest.getRoomId());
+        reservationServiceClient.checkIfGuestsExists(reservationRequest.getGuestsIds());
+
         Reservation reservation = mapRequestToReservation(reservationRequest);
 
         return reservationRepository.save(reservation);
@@ -61,11 +71,14 @@ public class ReservationService {
         }
     }
 
-    private static void updateData(ReservationUpdateRequest reservationUpdateRequest,
+    private void updateData(ReservationUpdateRequest reservationUpdateRequest,
                                    Reservation reservation) {
+        if(reservationUpdateRequest.getPaymentId() != null){
+            reservationServiceClient.checkIfGuestsExists(reservationUpdateRequest.getGuestsIds());
+            reservation.setGuestsIds(reservationUpdateRequest.getGuestsIds());
+        }
         reservation.setReservationStatus(reservationUpdateRequest.getReservationStatus());
         reservation.setReservationDate(reservationUpdateRequest.getReservationDate());
-        reservation.setGuestsIds(reservationUpdateRequest.getGuestsIds());
         reservation.setPaymentId(reservationUpdateRequest.getPaymentId());
         reservation.setAmount(reservationUpdateRequest.getAmount());
     }
@@ -78,12 +91,14 @@ public class ReservationService {
         }
     }
 
-    private static Reservation mapRequestToReservation(ReservationRequest reservationRequest) {
+    private Reservation mapRequestToReservation(ReservationRequest reservationRequest) {
+        List<ReservationAddOn> reservationAddOns
+                = reservationAddOnService.findAllByIdIn(reservationRequest.getReservationAddOnsIds());
+
         return Reservation.builder()
                 .reservationStatus(reservationRequest.getReservationStatus())
                 .reservationDate(reservationRequest.getReservationDate())
                 .guestsIds(reservationRequest.getGuestsIds())
-                .paymentId(reservationRequest.getPaymentId())
                 .roomId(reservationRequest.getRoomId())
                 .amount(reservationRequest.getAmount())
                 .createdTime(LocalDateTime.now())
@@ -92,5 +107,9 @@ public class ReservationService {
 
     public boolean existsById(UUID id) {
         return reservationRepository.existsById(id);
+    }
+
+    public void deleteAllByRoomId(UUID roomId) {
+        reservationRepository.deleteAllByRoomId(roomId);
     }
 }

@@ -62,7 +62,6 @@ class ReservationIntegrationTest {
             .reservationStatus(ReservationStatus.CONFIRMED)
             .reservationDate(createReservationDate())
             .guestsIds(List.of(UUID.fromString("958471eb-7979-4759-a08e-823e5a954a14")))
-            .paymentId(UUID.fromString("ad3dcfaa-84df-41d6-89a9-03d10265c250"))
             .roomId(UUID.fromString("fe6cb857-7e7e-4f33-966a-8d7aa1e80af4"))
             .amount(100)
             .build();

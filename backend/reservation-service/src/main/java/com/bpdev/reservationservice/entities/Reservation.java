@@ -31,8 +31,6 @@ public class Reservation {
     @NotNull
     @Column(nullable = false)
     private List<UUID> guestsIds;
-    @NotNull
-    @Column(nullable = false, unique = true)
     private UUID paymentId;
     @NotNull
     @Column(nullable = false)

@@ -59,7 +59,8 @@ public class ReservationController {
 
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Void> updateById
-            (@PathVariable UUID id, @RequestBody ReservationUpdateRequest reservationUpdateRequest) {
+            (@PathVariable UUID id,
+             @Valid @RequestBody ReservationUpdateRequest reservationUpdateRequest) {
         reservationService.updateById(id, reservationUpdateRequest);
         return ResponseEntity.noContent().build();
     }

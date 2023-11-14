@@ -24,11 +24,9 @@ public class ReservationRequest {
     @NotNull
     private List<UUID> guestsIds;
     @NotNull
-    private UUID paymentId;
-    @NotNull
     private UUID roomId;
     @NotNull
     @PositiveOrZero
     private Integer amount;
-    private List<ReservationAddOn> reservationAddOns;
+    private List<UUID> reservationAddOnsIds;
 }

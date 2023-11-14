@@ -48,9 +48,15 @@ public class GuestController {
         return ResponseEntity.ok().body(guestService.findByPhoneNumber(phoneNumber));
     }
 
+    @GetMapping(params = "exists")
+    public ResponseEntity<Boolean> existsAllByIdIn(@RequestParam("exists") List<UUID> ids) {
+        return ResponseEntity.ok().body(guestService.existsByIdIn(ids));
+    }
+
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Void> updateById
-            (@PathVariable UUID id, @RequestBody GuestUpdateRequest guestUpdateRequest) {
+            (@PathVariable UUID id,
+             @Valid @RequestBody GuestUpdateRequest guestUpdateRequest) {
         guestService.updateById(id, guestUpdateRequest);
         return ResponseEntity.noContent().build();
     }

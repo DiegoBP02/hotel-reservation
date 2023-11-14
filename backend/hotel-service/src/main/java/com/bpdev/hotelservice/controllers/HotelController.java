@@ -60,7 +60,8 @@ public class HotelController {
 
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Void> updateById
-            (@PathVariable UUID id, @RequestBody HotelUpdateRequest hotelUpdateRequest) {
+            (@PathVariable UUID id,
+             @Valid @RequestBody HotelUpdateRequest hotelUpdateRequest) {
         hotelService.updateById(id, hotelUpdateRequest);
         return ResponseEntity.noContent().build();
     }

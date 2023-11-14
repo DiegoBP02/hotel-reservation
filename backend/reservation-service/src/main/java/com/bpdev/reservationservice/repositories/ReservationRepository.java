@@ -13,4 +13,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, UUID> 
     Optional<Reservation> findByPaymentId(UUID id);
     List<Reservation> findAllByRoomId(UUID id);
     List<Reservation> findAllByGuestsIdsIn(List<UUID> guestsIds);
+    void deleteAllByRoomId(UUID roomId);
 }

@@ -77,4 +77,7 @@ public class ReservationAddOnService {
                 .build();
     }
 
+    public List<ReservationAddOn> findAllByIdIn(List<UUID> reservationAddOnsIds) {
+        return reservationAddOnRepository.findAllByIdIn(reservationAddOnsIds);
+    }
 }

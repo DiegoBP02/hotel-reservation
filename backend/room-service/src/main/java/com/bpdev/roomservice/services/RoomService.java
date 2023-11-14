@@ -27,6 +27,9 @@ public class RoomService {
     @Autowired
     private RoomServiceClient roomServiceClient;
 
+    @Autowired
+    private MessagingService messagingService;
+
     public Room create(RoomRequest roomRequest){
         try{
             roomServiceClient.checkIfHotelExists(roomRequest.getHotelId());
@@ -91,6 +94,8 @@ public class RoomService {
     public void deleteById(UUID id){
         try {
             roomRepository.deleteById(id);
+
+            messagingService.publishRoomDeletedEvent(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Room not found. ID " + id);
         }
@@ -110,5 +115,9 @@ public class RoomService {
 
     public void deleteAllByHotelId(UUID hotelId) {
         roomRepository.deleteAllByHotelId(hotelId);
+    }
+
+    public boolean existsById(UUID id) {
+        return roomRepository.existsById(id);
     }
 }

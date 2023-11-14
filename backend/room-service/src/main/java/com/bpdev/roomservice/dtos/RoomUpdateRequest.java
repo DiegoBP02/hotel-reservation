@@ -15,14 +15,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoomUpdateRequest {
-    @NotBlank
     @Size(min = 5, max = 5)
     private String roomNumber;
-    @NotNull
     private RoomType roomType;
-    @NotNull
     private RoomStatus roomStatus;
-    @NotNull
     @Min(0)
     @Max(10)
     private int beds;

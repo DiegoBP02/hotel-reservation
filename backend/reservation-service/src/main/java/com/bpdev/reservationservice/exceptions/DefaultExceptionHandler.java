@@ -2,6 +2,7 @@ package com.bpdev.reservationservice.exceptions;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -100,6 +101,21 @@ public class DefaultExceptionHandler {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(Instant.now(), status.value(), error,
                 e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<StandardError> ConstraintViolationException(
+            ConstraintViolationException e, HttpServletRequest request) {
+        logger.error("ConstraintViolationException occurred: ", e);
+        HttpStatus status = HttpStatus.CONFLICT;
+        String error = "Validation failed";
+        List<String> message = new ArrayList<>();
+        e.getConstraintViolations().forEach(violation ->
+                message.add(violation.getPropertyPath() + ": " + violation.getMessage()));
+
+        StandardError err = new StandardError(Instant.now(), status.value(), error,
+                message.toString(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
